@@ -22,7 +22,7 @@ export default function Navbar() {
           {/* Left: logo */}
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-emerald-400 text-white flex items-center justify-center font-bold">V</div>
+              <div className="w-10 h-10 rounded-lg bg-linear-to-br from-green-500 to-emerald-400 text-white flex items-center justify-center font-bold">V</div>
               <div className="leading-tight">
                 <div className="text-lg font-extrabold">Voluntr</div>
                 <div className="text-xs text-gray-500 -mt-0.5 hidden md:block">Quick acts. Real impact.</div>

@@ -1,0 +1,212 @@
+[
+  {
+    "id": 1,
+    "title": "Create a simple infographic",
+    "category": "Design",
+    "duration": 20,
+    "description": "Design a clean infographic for a charity fact or statistic."
+  },
+  {
+    "id": 2,
+    "title": "Edit a short video clip",
+    "category": "Media",
+    "duration": 25,
+    "description": "Trim and enhance a 20–30 second video for social media."
+  },
+  {
+    "id": 3,
+    "title": "Write a short press release intro",
+    "category": "Writing",
+    "duration": 15,
+    "description": "Draft the first paragraph for an event press release."
+  },
+  {
+    "id": 4,
+    "title": "Research 3 local nonprofits",
+    "category": "Research",
+    "duration": 20,
+    "description": "Find basic contact info and mission statements."
+  },
+  {
+    "id": 5,
+    "title": "Design a social media template",
+    "category": "Design",
+    "duration": 20,
+    "description": "Create a reusable template for event announcements."
+  },
+  {
+    "id": 6,
+    "title": "Test a donation flow",
+    "category": "Tech",
+    "duration": 15,
+    "description": "Simulate a donation process and note any bugs."
+  },
+  {
+    "id": 7,
+    "title": "Write a mission statement draft",
+    "category": "Writing",
+    "duration": 18,
+    "description": "Propose a 2–3 sentence mission statement."
+  },
+  {
+    "id": 8,
+    "title": "Create email subject line ideas",
+    "category": "Marketing",
+    "duration": 10,
+    "description": "Come up with 5 possible subject lines for a campaign."
+  },
+  {
+    "id": 9,
+    "title": "Create a small dataset",
+    "category": "Tech",
+    "duration": 20,
+    "description": "Organize 10–15 records into a CSV for analytics."
+  },
+  {
+    "id": 10,
+    "title": "Update an event calendar",
+    "category": "Local",
+    "duration": 15,
+    "description": "Add new dates and remove expired postings."
+  },
+  {
+    "id": 11,
+    "title": "Make a minimalist flyer layout",
+    "category": "Design",
+    "duration": 20,
+    "description": "Set up a clean flyer layout using Canva or Figma."
+  },
+  {
+    "id": 12,
+    "title": "Evaluate 3 Instagram posts",
+    "category": "Marketing",
+    "duration": 12,
+    "description": "Give quick feedback on clarity and tone."
+  },
+  {
+    "id": 13,
+    "title": "Transcribe short meeting notes",
+    "category": "Writing",
+    "duration": 15,
+    "description": "Turn rough notes into a clean bullet list."
+  },
+  {
+    "id": 14,
+    "title": "Crop and resize photos",
+    "category": "Media",
+    "duration": 10,
+    "description": "Prepare 4–5 images for web use."
+  },
+  {
+    "id": 15,
+    "title": "Check accessibility features",
+    "category": "Tech",
+    "duration": 18,
+    "description": "Verify alt text and color contrast on a page."
+  },
+  {
+    "id": 16,
+    "title": "Organize a mini spreadsheet",
+    "category": "Tech",
+    "duration": 15,
+    "description": "Sort and format a list of supporters."
+  },
+  {
+    "id": 17,
+    "title": "Take photos of a local community area",
+    "category": "Local",
+    "duration": 20,
+    "description": "Capture 5–7 photos for a neighborhood report."
+  },
+  {
+    "id": 18,
+    "title": "Write captions for 3 photos",
+    "category": "Writing",
+    "duration": 12,
+    "description": "Create short, friendly captions for social media."
+  },
+  {
+    "id": 19,
+    "title": "Research 5 affordable resources",
+    "category": "Research",
+    "duration": 20,
+    "description": "Find affordable services for a community guide."
+  },
+  {
+    "id": 20,
+    "title": "Sketch a wireframe",
+    "category": "Design",
+    "duration": 18,
+    "description": "Create a simple layout for a webpage or screen."
+  },
+  {
+    "id": 21,
+    "title": "Help moderate an online forum",
+    "category": "Online",
+    "duration": 15,
+    "description": "Monitor discussions and flag inappropriate content."
+  },
+  {
+    "id": 22,
+    "title": "Volunteer as a virtual tutor",
+    "category": "Kids",
+    "duration": 30,
+    "description": "Assist elementary students with reading or math online."
+  },
+  {
+    "id": 23,
+    "title": "Design a charity logo",
+    "category": "Design",
+    "duration": 25,
+    "description": "Create a logo for a local nonprofit project."
+  },
+  {
+    "id": 24,
+    "title": "Record a short explainer video",
+    "category": "Media",
+    "duration": 20,
+    "description": "Make a 30–60 second video explaining a project."
+  },
+  {
+    "id": 25,
+    "title": "Conduct a mini survey",
+    "category": "Research",
+    "duration": 15,
+    "description": "Ask 5–10 people about a local issue and summarize results."
+  },
+  {
+    "id": 26,
+    "title": "Write blog content for social impact",
+    "category": "Writing",
+    "duration": 20,
+    "description": "Draft 1–2 paragraphs for a volunteer blog post."
+  },
+  {
+    "id": 27,
+    "title": "Build a simple webpage",
+    "category": "Tech",
+    "duration": 30,
+    "description": "Use HTML/CSS to create a page for a local cause."
+  },
+  {
+    "id": 28,
+    "title": "Create social media graphics",
+    "category": "Marketing",
+    "duration": 15,
+    "description": "Design 3 posts for an upcoming campaign."
+  },
+  {
+    "id": 29,
+    "title": "Organize local clean-up schedule",
+    "category": "Local",
+    "duration": 20,
+    "description": "Make a timetable for volunteers in your community."
+  },
+  {
+    "id": 30,
+    "title": "Proofread educational material",
+    "category": "Writing",
+    "duration": 15,
+    "description": "Check documents for grammar and clarity."
+  }
+]
