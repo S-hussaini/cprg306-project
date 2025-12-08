@@ -47,7 +47,7 @@ export default function TasksPage() {
 
       {/* Main content */}
       <div className="relative z-10">
-        <h1 className="text-2xl font-bold mb-6 text-center text-black">
+        <h1 className="text-2xl font-bold mb-6 text-center text-green-900">
           Voluntr Tasks
         </h1>
 
