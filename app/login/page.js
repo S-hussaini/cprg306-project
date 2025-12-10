@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import PageHeader from "../../components/SiteHeader";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,6 +14,7 @@ export default function Login() {
       ></div>
 
       <div className="absolute inset-0 bg-black/60"></div>
+      <PageHeader />
 
       <main className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6">
         <div className="bg-white/90 backdrop-blur-lg p-10 rounded-xl shadow-lg w-full max-w-md">

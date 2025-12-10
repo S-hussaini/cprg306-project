@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import PageHeader from "../../components/SiteHeader";
 
 export default function Contact() {
   return (
@@ -11,16 +12,7 @@ export default function Contact() {
 
       <div className="absolute inset-0 bg-black/60"></div>
 
-      <header className="absolute top-0 left-0 w-full z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-end items-center text-white">
-          <nav className="space-x-6 font-medium">
-            <Link href="/" className="hover:text-yellow-400">Home</Link>
-            <Link href="/tasks" className="hover:text-yellow-400">Tasks</Link>
-            <Link href="/contact" className="hover:text-yellow-400">Contact Us</Link>
-            <Link href="/signup" className="hover:text-yellow-400">Sign Up</Link>
-          </nav>
-        </div>
-      </header>
+      <PageHeader />
 
       <main className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 text-center">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-4 drop-shadow-lg">

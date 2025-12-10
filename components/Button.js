@@ -1,33 +1,24 @@
-export function SimpleButton({
-  displayText = "Click me",
-  eventHandler,
-  // not awesome because 1 color added will override all of this
-  colors = "bg-black text-white hover:bg-blue-800",
-}) {
-  return (
-    <button
-      onClick={eventHandler}
-      className={`${colors} py-4 px-12 my-4 bg-orange-500 rounded-full transition ease-linear duration-150 cursor-pointer `}
-    >
-      {displayText}
-    </button>
-  );
-}
+import Link from "next/link";
 
-export function AppButton({ text, onClick, variant = "primary" }) {
-  const variants = {
-    primary:
-      "bg-blue-500 hover:bg-blue-700 dark:bg-orange-500 hover:dark:bg-orange-700",
-    secondary:
-      "bg-gray-500 hover:bg-gray-700 dark:bg-gray-600 hover:dark:bg-gray-800",
-    outline: "",
+export default function Button({ href, children, type = "primary", onClick }) {
+  const baseClasses = "px-6 py-3 rounded-md font-semibold shadow transition";
+
+  const styles = {
+    primary: "bg-yellow-400 text-green-900 hover:opacity-95",
+    secondary: "border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-green-900",
   };
+
+  if (href) {
+    return (
+      <Link href={href} className={`${baseClasses} ${styles[type]}`}>
+        {children}
+      </Link>
+    );
+  }
+
   return (
-    <button
-      onClick={onClick}
-      className={`${variants[variant]}  px-4 py-2 rounded-full cursor-pointer`}
-    >
-      {text}
+    <button onClick={onClick} className={`${baseClasses} ${styles[type]}`}>
+      {children}
     </button>
   );
 }
