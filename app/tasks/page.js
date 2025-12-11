@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import TaskCard from "../../components/TaskCard"; 
 import PageHeader from "../../components/SiteHeader";
 import Button from "../../components/Button";
-import { db, collection, getDocs } from "../../lib/firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../lib/firebase";
 
 export const filters = [
   { label: "All Tasks", value: "all" },
