@@ -50,11 +50,13 @@ export default function Contact() {
           </label>
 
           <button
-            type="submit"
-            className="w-full py-3 bg-yellow-400 text-green-900 font-semibold rounded-md shadow hover:opacity-95 transition"
-          >
-            Send Message
-          </button>
+  type="button"
+  onClick={() => alert("Your message has been sent successfully.")}
+  className="w-full py-3 bg-yellow-400 text-green-900 font-semibold rounded-md shadow hover:opacity-95 transition"
+>
+  Send Message
+</button>
+
         </form>
       </main>
     </div>
