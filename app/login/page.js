@@ -5,20 +5,28 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import PageHeader from "../../components/SiteHeader";
 import { auth } from "../../lib/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import { useUserAuth } from "../../lib/auth-context";
 
 export default function Login() {
   const router = useRouter();
   const { gitHubSignIn } = useUserAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [resetMessage, setResetMessage] = useState("");
+  const [resetLoading, setResetLoading] = useState(false);
 
   const handleEmailLogin = async (e) => {
     e.preventDefault();
     setError("");
+    setResetMessage("");
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
       router.push("/profile");
@@ -29,6 +37,8 @@ export default function Login() {
 
   const handleGithubLogin = async () => {
     setError("");
+    setResetMessage("");
+
     try {
       await gitHubSignIn();
       router.push("/profile");
@@ -37,18 +47,50 @@ export default function Login() {
     }
   };
 
+  const handlePasswordReset = async () => {
+    setError("");
+    setResetMessage("");
+
+    if (!email) {
+      setError("Please enter your email address first.");
+      return;
+    }
+
+    setResetLoading(true);
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setResetMessage("Password reset email sent. Check your inbox.");
+    } catch (err) {
+      console.error(err);
+      setError("Failed to send password reset email.");
+    }
+
+    setResetLoading(false);
+  };
+
   return (
     <div className="relative min-h-screen">
-      <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/pic.png')" }} />
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/pic.png')" }}
+      />
       <div className="absolute inset-0 bg-black/60"></div>
       <PageHeader />
 
-      <main className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6">
+      <main className="relative z-10 flex items-center justify-center min-h-screen px-6">
         <div className="bg-white/90 backdrop-blur-lg p-10 rounded-xl shadow-lg w-full max-w-md">
-          <h1 className="text-3xl font-extrabold text-center mb-1 text-green-900">Welcome Back</h1>
-          <p className="text-center text-gray-700 mb-8">Login to continue.</p>
+          <h1 className="text-3xl font-extrabold text-center mb-1 text-green-900">
+            Welcome Back
+          </h1>
+          <p className="text-center text-gray-700 mb-8">
+            Login to continue.
+          </p>
 
           {error && <p className="text-red-600 mb-3">{error}</p>}
+          {resetMessage && (
+            <p className="text-green-700 mb-3">{resetMessage}</p>
+          )}
 
           <form onSubmit={handleEmailLogin} className="space-y-5">
             <label className="block">
@@ -82,6 +124,17 @@ export default function Login() {
               </div>
             </label>
 
+            <div className="text-right">
+              <button
+                type="button"
+                onClick={handlePasswordReset}
+                disabled={resetLoading}
+                className="text-sm text-green-700 underline hover:text-green-900"
+              >
+                {resetLoading ? "Sending..." : "Forgot password?"}
+              </button>
+            </div>
+
             <button
               type="submit"
               className="w-full py-3 bg-green-700 text-white font-semibold rounded-md shadow hover:opacity-90 transition"
@@ -90,7 +143,7 @@ export default function Login() {
             </button>
           </form>
 
-          <div className="mt-4 text-center">
+          <div className="mt-4">
             <button
               onClick={handleGithubLogin}
               className="w-full flex items-center justify-center gap-2 py-3 bg-black text-white font-semibold rounded-md shadow hover:opacity-90 transition"
