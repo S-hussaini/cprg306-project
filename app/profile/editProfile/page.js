@@ -160,40 +160,69 @@ export default function EditProfile() {
             />
           </div>
 
-          {/* Availability Calendar */}
-          <div>
-            <label className="font-semibold">Availability</label>
+        {/* Availability Calendar */}
+<div>
+  <label className="font-semibold">Availability</label>
 
-            <div className="flex gap-2 mt-1">
-              <input
-                type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                className="flex-1 border rounded px-3 py-2"
-              />
+  <div className="flex gap-2 mt-1">
+    <input
+      type="date"
+      value={selectedDate}
+      onChange={(e) => setSelectedDate(e.target.value)}
+      className="flex-1 border rounded px-3 py-2"
+    />
 
-              <button
-                type="button"
-                onClick={addDate}
-                className="px-4 py-2 bg-yellow-400 rounded font-semibold"
-              >
-                Add
-              </button>
-            </div>
+    <button
+      type="button"
+      onClick={() => {
+        if (!selectedDate) return;
 
-            {availabilityDates.length > 0 && (
-              <ul className="mt-3 space-y-1">
-                {availabilityDates.map((date) => (
-                  <li
-                    key={date}
-                    className="text-sm bg-gray-100 px-3 py-2 rounded"
-                  >
-                    {formatDate(date)}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+        setAvailabilityDates((prev) => {
+          if (prev.includes(selectedDate)) return prev;
+          return [...prev, selectedDate].sort();
+        });
+
+        setSelectedDate("");
+      }}
+      className="px-4 py-2 bg-yellow-400 rounded font-semibold"
+    >
+      Add
+    </button>
+  </div>
+
+  {availabilityDates.length > 0 && (
+    <div className="mt-4 space-y-2">
+      {availabilityDates.map((date) => (
+        <div
+          key={date}
+          className="flex justify-between items-center bg-gray-100 px-4 py-2 rounded"
+        >
+          <span className="text-sm font-medium">
+            {new Date(date).toLocaleDateString("en-US", {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </span>
+
+          <button
+            type="button"
+            onClick={() =>
+              setAvailabilityDates((prev) =>
+                prev.filter((d) => d !== date)
+              )
+            }
+            className="text-sm text-red-500 hover:underline"
+          >
+            Remove
+          </button>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
 
          <div className="flex gap-4 mt-6">
             <Button
