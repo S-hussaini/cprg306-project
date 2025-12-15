@@ -1,23 +1,32 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { doc, getDoc, collection, getDocs } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+  setDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db } from "../../../lib/firebase";
 import { useParams, useRouter } from "next/navigation";
 import { useUserAuth } from "../../../lib/auth-context";
 
 export default function TaskDetailPage() {
-  const { id } = useParams();
+  const params = useParams();
+  const id = Array.isArray(params.id) ? params.id[0] : params.id;
+
   const router = useRouter();
   const { user, loading: authLoading } = useUserAuth();
 
   const [task, setTask] = useState(null);
-  const [loading, setLoading] = useState(true); // fetch loading
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [notFound, setNotFound] = useState(false);
+  const [volunteering, setVolunteering] = useState(false);
 
   useEffect(() => {
-    // defensive: if id is missing, show error
     if (!id) {
       setError("Task id is missing from the URL.");
       setLoading(false);
@@ -25,49 +34,37 @@ export default function TaskDetailPage() {
     }
 
     const fetchTask = async () => {
-      setLoading(true);
-      setError(null);
-      setNotFound(false);
-
       try {
-        // 1) Try direct doc read at tasks/{id}
+        setLoading(true);
+
         const docRef = doc(db, "tasks", id);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          // If the doc exists, use it (include id)
           setTask({ id: docSnap.id, ...docSnap.data() });
-          setLoading(false);
           return;
         }
 
-        // 2) Fallback: maybe the Firestore document id is different.
-        //    Scan the tasks collection and try to find a matching field.
-        const tasksCol = collection(db, "tasks");
-        const snapshot = await getDocs(tasksCol);
-
-        // Try to match either a stored `id` field, a `slug`, or the title.
+        const snapshot = await getDocs(collection(db, "tasks"));
         const docs = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+
         const found = docs.find(d =>
           d.id === id ||
-          (d.id && String(d.id) === String(id)) ||
-          (d.id && String(d.id).toLowerCase() === String(id).toLowerCase()) ||
-          (d.slug && String(d.slug) === String(id)) ||
-          (d.title && d.title.toLowerCase().replace(/\s+/g, "-") === String(id).toLowerCase())
+          d.slug === id ||
+          (d.title &&
+            d.title.toLowerCase().replace(/\s+/g, "-") ===
+              id.toLowerCase())
         );
 
         if (found) {
           setTask(found);
-          setLoading(false);
-          return;
+        } else {
+          setNotFound(true);
         }
-
-        // Nothing found
-        setNotFound(true);
-        setLoading(false);
       } catch (err) {
         console.error("Error fetching task:", err);
-        setError(err.message || "Failed to fetch task. Check console for details.");
+        setError("Failed to load task.");
+      } finally {
         setLoading(false);
       }
     };
@@ -81,11 +78,34 @@ export default function TaskDetailPage() {
       return;
     }
 
+    if (!task) return;
 
-    alert("You volunteered for this task!");
+    setVolunteering(true);
+
+    try {
+      const volunteerId = `${task.id}_${user.uid}`;
+
+      await setDoc(
+        doc(db, "volunteers", volunteerId),
+        {
+          taskId: task.id,
+          userId: user.uid,
+          email: user.email,
+          volunteeredAt: serverTimestamp(),
+        },
+        { merge: true }
+      );
+
+      alert("You successfully volunteered for this task!");
+      router.push("/profile");
+    } catch (err) {
+      console.error("Volunteer error:", err);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setVolunteering(false);
+    }
   };
 
-  // UI states
   if (loading) {
     return (
       <div className="text-white text-center mt-10">
@@ -96,25 +116,22 @@ export default function TaskDetailPage() {
 
   if (error) {
     return (
-      <div className="text-white text-center mt-10">
-        <p className="font-semibold mb-2">Error</p>
-        <pre className="whitespace-pre-wrap text-sm">{error}</pre>
+      <div className="text-red-400 text-center mt-10">
+        <p>{error}</p>
       </div>
     );
   }
 
-  if (notFound) {
+  if (notFound || !task) {
     return (
       <div className="text-white text-center mt-10">
-        <p className="text-2xl font-semibold mb-2">Task not found</p>
-        <p className="text-sm">Make sure the task id in the URL is correct.</p>
+        <p className="text-2xl font-semibold">Task not found</p>
       </div>
     );
   }
 
-
   return (
-    <div className="p-8 min-h-screen text-white relative ">
+    <div className="p-8 min-h-screen text-white relative">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url('/pic.png')" }}
@@ -125,25 +142,26 @@ export default function TaskDetailPage() {
         <h1 className="text-3xl font-bold mb-4">{task.title}</h1>
         <p className="text-lg mb-3">{task.description}</p>
 
-        <p className="text-md mb-2">
+        <p className="mb-2">
           <strong>Category:</strong> {task.category}
         </p>
-        <p className="text-md mb-6">
+        <p className="mb-6">
           <strong>Points:</strong> {task.points}
         </p>
 
         {user ? (
           <button
             onClick={handleVolunteer}
-            className="bg-green-600 px-6 py-3 rounded-lg text-white"
+            disabled={volunteering}
+            className="bg-green-600 px-6 py-3 rounded-lg disabled:opacity-50"
           >
-            Volunteer for this Task
+            {volunteering ? "Saving..." : "Volunteer for this Task"}
           </button>
         ) : (
           !authLoading && (
             <button
               onClick={() => router.push("/login")}
-              className="bg-blue-600 px-6 py-3 rounded-lg text-white"
+              className="bg-blue-600 px-6 py-3 rounded-lg"
             >
               Login to Volunteer
             </button>
