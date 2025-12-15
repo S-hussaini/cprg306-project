@@ -120,8 +120,20 @@ export default function Profile() {
             <strong>Username:</strong> {user.email.split("@")[0]}
           </p>
 
+          <p className="text-xl mb-2 text-gray-800">
+            <strong>Bio:</strong> {profileData?.bio || "No bio added yet"}
+          </p>
+
+          <p className="text-xl mb-2 text-gray-800">
+            <strong>Phone:</strong> {profileData?.phone || "No phone number"}
+          </p>
+
+          <p className="text-xl mb-4 text-gray-800">
+            <strong>Availability:</strong> {profileData?.availability || "No availability info"}
+          </p>
+
           <div className="flex flex-wrap gap-4 mt-4">
-            <Button text="Update Profile Details" onClick={() => router.push("/profile/edit")}>
+            <Button text="Update Profile Details" onClick={() => router.push("/profile/editProfile")}>
             Update Profile Details
             </Button>
           </div>
