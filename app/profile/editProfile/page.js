@@ -22,7 +22,12 @@ export default function EditProfile() {
   const [fullName, setFullName] = useState("");
   const [bio, setBio] = useState("");
   const [phone, setPhone] = useState("");
-  const [availability, setAvailability] = useState("");
+
+  // calendar availability
+  const [availabilityDates, setAvailabilityDates] = useState([]);
+
+  const [selectedDate, setSelectedDate] = useState("");
+
   const [userDocId, setUserDocId] = useState("");
   const [saving, setSaving] = useState(false);
   const [loadingProfile, setLoadingProfile] = useState(true);
@@ -32,7 +37,7 @@ export default function EditProfile() {
     if (!loading && !user) router.push("/");
   }, [user, loading, router]);
 
-  // Load existing user data
+  // Load existing profile
   useEffect(() => {
     if (!user) return;
 
@@ -49,7 +54,7 @@ export default function EditProfile() {
         setFullName(data.fullName || "");
         setBio(data.bio || "");
         setPhone(data.phone || "");
-        setAvailability(data.avlibality || "");
+        setAvailabilityDates(data.availability || []);
       }
 
       setLoadingProfile(false);
@@ -58,7 +63,30 @@ export default function EditProfile() {
     loadProfile();
   }, [user]);
 
-  // Save changes
+  // Add availability date
+  const addDate = () => {
+    if (!selectedDate) return;
+
+    if (!availabilityDates.includes(selectedDate)) {
+      setAvailabilityDates([...availabilityDates, selectedDate]);
+    }
+
+    setSelectedDate("");
+  };
+
+  // Format date display
+  const formatDate = (dateStr) => {
+
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  // Save profile
   const handleSave = async () => {
     if (!userDocId) return;
 
@@ -69,16 +97,16 @@ export default function EditProfile() {
         fullName,
         bio,
         phone,
-        availability,
+        availability: availabilityDates,
         updatedAt: new Date(),
       });
 
       router.push("/profile");
     } catch (err) {
       console.error("Update failed:", err);
+    } finally {
+      setSaving(false);
     }
-
-    setSaving(false);
   };
 
   if (loading || loadingProfile) {
@@ -91,8 +119,8 @@ export default function EditProfile() {
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url('/pic.png')" }}
       />
-            
       <div className="absolute inset-0 bg-black/60"></div>
+
       <PageHeader />
 
       <div className="relative z-10 max-w-2xl mx-auto py-10">
@@ -101,6 +129,7 @@ export default function EditProfile() {
         </h1>
 
         <div className="bg-white p-6 rounded-2xl shadow space-y-4">
+          {/* Full Name */}
           <div>
             <label className="font-semibold">Full Name</label>
             <input
@@ -110,6 +139,7 @@ export default function EditProfile() {
             />
           </div>
 
+          {/* Bio */}
           <div>
             <label className="font-semibold">Bio</label>
             <textarea
@@ -120,6 +150,7 @@ export default function EditProfile() {
             />
           </div>
 
+          {/* Phone */}
           <div>
             <label className="font-semibold">Phone</label>
             <input
@@ -129,17 +160,42 @@ export default function EditProfile() {
             />
           </div>
 
+          {/* Availability Calendar */}
           <div>
             <label className="font-semibold">Availability</label>
-            <textarea
-              value={availability}
-              onChange={(e) => setAvailability(e.target.value)}
-              className="w-full border rounded px-3 py-2"
-              rows={4}
-            />
+
+            <div className="flex gap-2 mt-1">
+              <input
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="flex-1 border rounded px-3 py-2"
+              />
+
+              <button
+                type="button"
+                onClick={addDate}
+                className="px-4 py-2 bg-yellow-400 rounded font-semibold"
+              >
+                Add
+              </button>
+            </div>
+
+            {availabilityDates.length > 0 && (
+              <ul className="mt-3 space-y-1">
+                {availabilityDates.map((date) => (
+                  <li
+                    key={date}
+                    className="text-sm bg-gray-100 px-3 py-2 rounded"
+                  >
+                    {formatDate(date)}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
-          <div className="flex gap-4 mt-6">
+         <div className="flex gap-4 mt-6">
             <Button
             text={saving ? "Saving..." : "Save Changes"}
             onClick={handleSave}
@@ -160,7 +216,7 @@ export default function EditProfile() {
               Change Password
             </Button>
           </div>
-          
+ 
         </div>
       </div>
     </div>
