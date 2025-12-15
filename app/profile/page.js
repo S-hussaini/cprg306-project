@@ -35,7 +35,7 @@ export default function Profile() {
         const snap = await getDocs(q);
 
         if (!snap.empty) {
-          setProfileData(snap.docs[0].data()); // Take the first matching document
+          setProfileData(snap.docs[0].data()); 
         } else {
           console.log("No user document found for this email!");
         }
@@ -47,6 +47,44 @@ export default function Profile() {
     };
 
     fetchProfile();
+  }, [user]);
+  // Fetch volunteer tasks
+  useEffect(() => {
+    if (!user) return;
+
+    const fetchVolunteerTasks = async () => {
+      setLoadingTasks(true);
+
+      try {
+        const volunteerRef = collection(db, "volunteers");
+        const q = query(volunteerRef, where("userId", "==", user.uid));
+        const snap = await getDocs(q);
+
+        const upcomingList = [];
+        const completedList = [];
+
+        for (const docSnap of snap.docs) {
+          const data = docSnap.data();
+          const taskRef = doc(db, "tasks", data.taskId);
+          const taskSnap = await getDoc(taskRef);
+
+          if (taskSnap.exists()) {
+            const taskData = { id: taskSnap.id, ...taskSnap.data() };
+            if (data.status === "completed") completedList.push(taskData);
+            else upcomingList.push(taskData);
+          }
+        }
+
+        setUpcoming(upcomingList);
+        setCompleted(completedList);
+      } catch (err) {
+        console.error("Error loading tasks:", err);
+      }
+
+      setLoadingTasks(false);
+    };
+
+    fetchVolunteerTasks();
   }, [user]);
 
   if (loading || !user || loadingProfile) {
@@ -63,7 +101,6 @@ export default function Profile() {
       <PageHeader />
 
       <div className="relative z-10 max-w-3xl mx-auto py-10">
-        {/* USER INFO */}
         <h1 className="text-3xl font-bold mb-6 text-gray-900">Profile Page</h1>
 
         <div className="bg-white p-6 rounded-2xl shadow-md mb-10">
@@ -88,12 +125,33 @@ export default function Profile() {
           </p>
 
           <p className="text-xl mb-4 text-gray-800">
-            <strong>Availability:</strong> {profileData?.availability || "No availability info"}
+            <strong>Availability:</strong>
+            <br />
+            {profileData?.availability && profileData.availability.length > 0 ? (
+              profileData.availability
+                .sort()
+                .map((dateStr) => {
+                  const date = new Date(dateStr);
+                  const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
+                  const formattedDate = date.toLocaleDateString("en-US", {
+                    month: "2-digit",
+                    day: "2-digit",
+                    year: "numeric",
+                  });
+                  return (
+                    <span key={dateStr} className="block">
+                      {weekday}: {formattedDate}
+                    </span>
+                  );
+                })
+            ) : (
+              "No availability info"
+            )}
           </p>
 
           <div className="flex flex-wrap gap-4 mt-4">
             <Button text="Update Profile Details" onClick={() => router.push("/profile/editProfile")}>
-            Update Profile Details
+              Update Profile Details
             </Button>
           </div>
         </div>
