@@ -37,7 +37,7 @@ export default function Profile() {
         const snap = await getDocs(q);
 
         if (!snap.empty) {
-          setProfileData(snap.docs[0].data()); // Take the first matching document
+          setProfileData(snap.docs[0].data()); 
         } else {
           console.log("No user document found for this email!");
         }
@@ -50,8 +50,7 @@ export default function Profile() {
 
     fetchProfile();
   }, [user]);
-
-  // Fetch volunteer tasks for user
+  // Fetch volunteer tasks
   useEffect(() => {
     if (!user) return;
 
@@ -104,7 +103,6 @@ export default function Profile() {
       <PageHeader />
 
       <div className="relative z-10 max-w-3xl mx-auto py-10">
-        {/* USER INFO */}
         <h1 className="text-3xl font-bold mb-6 text-gray-900">Profile Page</h1>
 
         <div className="bg-white p-6 rounded-2xl shadow-md mb-10">
@@ -129,19 +127,38 @@ export default function Profile() {
           </p>
 
           <p className="text-xl mb-4 text-gray-800">
-            <strong>Availability:</strong> {profileData?.availability || "No availability info"}
+            <strong>Availability:</strong>
+            <br />
+            {profileData?.availability && profileData.availability.length > 0 ? (
+              profileData.availability
+                .sort()
+                .map((dateStr) => {
+                  const date = new Date(dateStr);
+                  const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
+                  const formattedDate = date.toLocaleDateString("en-US", {
+                    month: "2-digit",
+                    day: "2-digit",
+                    year: "numeric",
+                  });
+                  return (
+                    <span key={dateStr} className="block">
+                      {weekday}: {formattedDate}
+                    </span>
+                  );
+                })
+            ) : (
+              "No availability info"
+            )}
           </p>
 
           <div className="flex flex-wrap gap-4 mt-4">
             <Button text="Update Profile Details" onClick={() => router.push("/profile/editProfile")}>
-            Update Profile Details
+              Update Profile Details
             </Button>
           </div>
         </div>
 
-        {/* TASK SECTIONS */}
         <div className="space-y-10">
-          {/* UPCOMING TASKS */}
           <div className="bg-white p-6 rounded-2xl shadow-md mb-10">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Upcoming Volunteer Tasks</h2>
 
@@ -157,7 +174,7 @@ export default function Profile() {
                     <p className="text-gray-700">{task.description}</p>
                     <p className="text-gray-600 mt-1"><strong>Points:</strong> {task.points}</p>
                     <Button text="View Task" onClick={() => router.push(`/tasks/${task.id}`)}>
-                    View Detail
+                      View Detail
                     </Button>
                   </div>
                 ))}
@@ -165,7 +182,6 @@ export default function Profile() {
             )}
           </div>
 
-          {/* COMPLETED TASKS */}
           <div className="bg-white p-6 rounded-2xl shadow-md mb-10">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Completed Tasks</h2>
 
