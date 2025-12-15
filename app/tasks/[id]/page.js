@@ -97,7 +97,7 @@ export default function TaskDetailPage() {
       );
 
       alert("You successfully volunteered for this task!");
-      router.push("/profile");
+      router.push("/dashboard");
     } catch (err) {
       console.error("Volunteer error:", err);
       alert("Something went wrong. Please try again.");
@@ -131,43 +131,50 @@ export default function TaskDetailPage() {
   }
 
   return (
-    <div className="p-8 min-h-screen text-white relative">
+    <div className="p-8 min-h-screen text-white relative ">
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center "
         style={{ backgroundImage: "url('/pic.png')" }}
       />
       <div className="absolute inset-0 bg-black/70" />
 
-      <div className="relative z-10 max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4">{task.title}</h1>
-        <p className="text-lg mb-3">{task.description}</p>
+      <div className="relative z-10 max-w-2xl mx-auto bg-amber-50 border-2 border-amber-500 rounded-xl p-6 shadow-lg my-40 px-10">
+  <h1 className="text-3xl font-bold mb-4 text-black">{task.title}</h1>
 
-        <p className="mb-2">
-          <strong>Category:</strong> {task.category}
-        </p>
-        <p className="mb-6">
-          <strong>Points:</strong> {task.points}
-        </p>
+  <p className="text-lg mb-3 text-black">{task.description}</p>
 
-        {user ? (
-          <button
-            onClick={handleVolunteer}
-            disabled={volunteering}
-            className="bg-green-600 px-6 py-3 rounded-lg disabled:opacity-50"
-          >
-            {volunteering ? "Saving..." : "Volunteer for this Task"}
-          </button>
-        ) : (
-          !authLoading && (
-            <button
-              onClick={() => router.push("/login")}
-              className="bg-blue-600 px-6 py-3 rounded-lg"
-            >
-              Login to Volunteer
-            </button>
-          )
-        )}
-      </div>
+  <p className="mb-2 text-black">
+    <strong>Category:</strong> {task.category}
+  </p>
+
+  <p className="mb-6 text-black">
+    <strong>Points:</strong> {task.points}
+  </p>
+
+  <div className="flex gap-4">
+    {user ? (
+      <>
+        <button
+          onClick={handleVolunteer}
+          disabled={volunteering}
+          className="bg-green-600 px-6 py-3 rounded-lg disabled:opacity-50 "
+        >
+          {volunteering ? "Saving..." : "Volunteer for this Task"}
+        </button>
+      </>
+    ) : (
+      !authLoading && (
+        <button
+          onClick={() => router.push("/login")}
+          className="bg-blue-600 px-6 py-3 rounded-lg"
+        >
+          Login to Volunteer
+        </button>
+      )
+    )}
+  </div>
+</div>
+
     </div>
   );
 }

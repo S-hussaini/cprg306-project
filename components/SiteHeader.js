@@ -18,6 +18,7 @@ export default function PageHeader() {
         <nav className="space-x-6 font-medium">
           <Link href="/" className="hover:text-yellow-400">Home</Link>
           <Link href="/tasks" className="hover:text-yellow-400">Tasks</Link>
+          <Link href="/dashboard" className="hover:text-yellow-400">Dashboard</Link>
           <Link href="/contact" className="hover:text-yellow-400">Contact Us</Link>
 
           {!user && (

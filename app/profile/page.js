@@ -13,9 +13,7 @@ export default function Profile() {
   const { user, loading, firebaseSignOut } = useUserAuth();
   const router = useRouter();
 
-  const [upcoming, setUpcoming] = useState([]);
-  const [completed, setCompleted] = useState([]);
-  const [loadingTasks, setLoadingTasks] = useState(true);
+
   const [profileData, setProfileData] = useState(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
 
@@ -49,45 +47,6 @@ export default function Profile() {
     };
 
     fetchProfile();
-  }, [user]);
-
-  // Fetch volunteer tasks for user
-  useEffect(() => {
-    if (!user) return;
-
-    const fetchVolunteerTasks = async () => {
-      setLoadingTasks(true);
-
-      try {
-        const volunteerRef = collection(db, "volunteers");
-        const q = query(volunteerRef, where("userId", "==", user.uid));
-        const snap = await getDocs(q);
-
-        const upcomingList = [];
-        const completedList = [];
-
-        for (const docSnap of snap.docs) {
-          const data = docSnap.data();
-          const taskRef = doc(db, "tasks", data.taskId);
-          const taskSnap = await getDoc(taskRef);
-
-          if (taskSnap.exists()) {
-            const taskData = { id: taskSnap.id, ...taskSnap.data() };
-            if (data.status === "completed") completedList.push(taskData);
-            else upcomingList.push(taskData);
-          }
-        }
-
-        setUpcoming(upcomingList);
-        setCompleted(completedList);
-      } catch (err) {
-        console.error("Error loading tasks:", err);
-      }
-
-      setLoadingTasks(false);
-    };
-
-    fetchVolunteerTasks();
   }, [user]);
 
   if (loading || !user || loadingProfile) {
@@ -139,53 +98,7 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* TASK SECTIONS */}
-        <div className="space-y-10">
-          {/* UPCOMING TASKS */}
-          <div className="bg-white p-6 rounded-2xl shadow-md mb-10">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Upcoming Volunteer Tasks</h2>
-
-            {loadingTasks ? (
-              <p className="text-gray-700">Loading tasks...</p>
-            ) : upcoming.length === 0 ? (
-              <p className="text-gray-700">No upcoming tasks.</p>
-            ) : (
-              <div className="space-y-4">
-                {upcoming.map((task) => (
-                  <div key={task.id} className="bg-white p-5 rounded-xl shadow">
-                    <h3 className="text-xl font-semibold text-green-900">{task.title}</h3>
-                    <p className="text-gray-700">{task.description}</p>
-                    <p className="text-gray-600 mt-1"><strong>Points:</strong> {task.points}</p>
-                    <Button text="View Task" onClick={() => router.push(`/tasks/${task.id}`)}>
-                    View Detail
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* COMPLETED TASKS */}
-          <div className="bg-white p-6 rounded-2xl shadow-md mb-10">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Completed Tasks</h2>
-
-            {loadingTasks ? (
-              <p className="text-gray-700">Loading tasks...</p>
-            ) : completed.length === 0 ? (
-              <p className="text-gray-700">No completed tasks yet.</p>
-            ) : (
-              <div className="space-y-4">
-                {completed.map((task) => (
-                  <div key={task.id} className="bg-white p-5 rounded-xl shadow">
-                    <h3 className="text-xl font-semibold text-gray-900">{task.title}</h3>
-                    <p className="text-gray-700">{task.description}</p>
-                    <p className="text-gray-600 mt-1"><strong>Points Earned:</strong> {task.points}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
+       
       </div>
     </div>
   );
