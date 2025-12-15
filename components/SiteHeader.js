@@ -18,42 +18,17 @@ export default function PageHeader() {
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-end items-center text-white">
         <nav className="space-x-6 font-medium">
           <Link href="/" className="hover:text-yellow-400">Home</Link>
-          <Link href="/tasks" className="hover:text-yellow-400">Tasks</Link>
-          <Link href="/dashboard" className="hover:text-yellow-400">Dashboard</Link>
-          <Link href="/contact" className="hover:text-yellow-400">Contact Us</Link>
 
-          {!user && (
-            <Link href="/" className="hover:text-yellow-400">
-              Home
-            </Link>
-          )}
-
-          {/* Always visible after login */}
-          <Link href="/tasks" className="hover:text-yellow-400">
-            Tasks
-          </Link>
-          <Link href="/contact" className="hover:text-yellow-400">
-            Contact Us
-          </Link>
-
-          {!user && (
-            <Link href="/login" className="hover:text-yellow-400">
-              Login
-            </Link>
-          )}
-          
-          {user && (
+          {user ? (
             <>
-              <Link href="/profile" className="hover:text-yellow-400">
-                Profile
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="hover:text-yellow-400"
-              >
-                Logout
-              </button>
+              <Link href="/tasks" className="hover:text-yellow-400">Tasks</Link>
+              <Link href="/dashboard" className="hover:text-yellow-400">Dashboard</Link>
+              <Link href="/contact" className="hover:text-yellow-400">Contact Us</Link>
+              <Link href="/profile" className="hover:text-yellow-400">Profile</Link>
+              <button onClick={handleLogout} className="hover:text-yellow-400">Logout</button>
             </>
+          ) : (
+            <Link href="/login" className="hover:text-yellow-400">Login</Link>
           )}
         </nav>
       </div>

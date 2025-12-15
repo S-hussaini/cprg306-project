@@ -48,44 +48,6 @@ export default function Profile() {
 
     fetchProfile();
   }, [user]);
-  // Fetch volunteer tasks
-  useEffect(() => {
-    if (!user) return;
-
-    const fetchVolunteerTasks = async () => {
-      setLoadingTasks(true);
-
-      try {
-        const volunteerRef = collection(db, "volunteers");
-        const q = query(volunteerRef, where("userId", "==", user.uid));
-        const snap = await getDocs(q);
-
-        const upcomingList = [];
-        const completedList = [];
-
-        for (const docSnap of snap.docs) {
-          const data = docSnap.data();
-          const taskRef = doc(db, "tasks", data.taskId);
-          const taskSnap = await getDoc(taskRef);
-
-          if (taskSnap.exists()) {
-            const taskData = { id: taskSnap.id, ...taskSnap.data() };
-            if (data.status === "completed") completedList.push(taskData);
-            else upcomingList.push(taskData);
-          }
-        }
-
-        setUpcoming(upcomingList);
-        setCompleted(completedList);
-      } catch (err) {
-        console.error("Error loading tasks:", err);
-      }
-
-      setLoadingTasks(false);
-    };
-
-    fetchVolunteerTasks();
-  }, [user]);
 
   if (loading || !user || loadingProfile) {
     return <p className="text-center mt-10">Loading profile...</p>;
