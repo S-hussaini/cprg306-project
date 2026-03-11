@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Voluntr – Volunteering Platform
 
-## Getting Started
+Voluntr is a full-stack web application that connects people with volunteering opportunities in their local communities. The platform makes it easier to discover causes you care about and quickly sign up for volunteer events.
 
-First, run the development server:
+Built with Next.js, Firebase, and Node.js, Voluntr provides a modern, responsive experience with real-time updates and secure user authentication.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+⸻
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Features
+	•	User Authentication
+Secure sign-up and login using Firebase Authentication.
+	•	Browse Volunteer Opportunities
+Users can view a list of volunteer events happening in their area.
+	•	Event Details
+Each opportunity includes information about the organization, date, and location.
+	•	Sign Up for Events
+Volunteers can easily register for events they are interested in.
+	•	Real-Time Updates
+Changes to events and registrations update instantly using Firebase.
+	•	Responsive UI
+Built with Next.js to ensure fast performance and smooth navigation.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+⸻
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Tech Stack
 
-## Learn More
+Frontend
+	•	Next.js
+	•	React
+	•	CSS / Tailwind (if you used it, keep it — otherwise remove)
 
-To learn more about Next.js, take a look at the following resources:
+Backend
+	•	Node.js
+	•	Firebase
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Database & Services
+	•	Firebase Firestore
+	•	Firebase Authentication
+	•	Firebase Hosting (if deployed there)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+/components     → Reusable UI components
+/pages          → Next.js pages and routing
+/lib            → Firebase configuration
+/styles         → Global styles
+/public         → Static assets
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Future Improvements
+	•	Organization dashboards for managing events
+	•	Volunteer profile pages
+	•	Event filtering by category and location
+	•	Email notifications for event updates
+
+⸻
+
+Contributing
+
+Contributions are welcome. Feel free to open an issue or submit a pull request.
+
+⸻
+
+License
+
+This project is licensed under the MIT License.
+
